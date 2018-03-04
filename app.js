@@ -1,22 +1,71 @@
+// const {
+//     JSDOM,
+// } = require('jsdom');
+// const $init = require('jquery');
+
+// const extractPagesUrls = async () => {
+//     const technopolisLink = 'http://www.technopolis.bg/bg//%D0%9C%D0%BE%D0%B1%D0%B8%D0%BB%D0%BD%D0%B8-%D1%82%D0%B5%D0%BB%D0%B5%D1%84%D0%BE%D0%BD%D0%B8-%D0%B8-%D0%A2%D0%B0%D0%B1%D0%BB%D0%B5%D1%82%D0%B8/%D0%9C%D0%BE%D0%B1%D0%B8%D0%BB%D0%BD%D0%B8-%D1%82%D0%B5%D0%BB%D0%B5%D1%84%D0%BE%D0%BD%D0%B8/c/P11040101?pricerange=&pageselect=100&page=';
+
+//     const dom = await JSDOM.fromURL(technopolisLink);
+//     const $ = $init(dom.window);
+//     const pageLinksSelector = '.paging a';
+
+//     const pageLinks = [...$(pageLinksSelector)].map((link) => $(link))
+//         .map(($link) => $link.attr('href'));
+//     return [...pageLinks];
+// };
+
+// const run = async () => {
+//     const pageUrls = await extractPagesUrls();
+//     console.log(pageUrls);
+// };
+
+// run();
+
+
 const {
     JSDOM
-} = require('jsdom');
+} = require("jsdom");
 
-const url = 'http://www.technopolis.bg/bg//%D0%9C%D0%BE%D0%B1%D0%B8%D0%BB%D0%BD%D0%B8-%D1%82%D0%B5%D0%BB%D0%B5%D1%84%D0%BE%D0%BD%D0%B8-%D0%B8-%D0%A2%D0%B0%D0%B1%D0%BB%D0%B5%D1%82%D0%B8/%D0%9C%D0%BE%D0%B1%D0%B8%D0%BB%D0%BD%D0%B8-%D1%82%D0%B5%D0%BB%D0%B5%D1%84%D0%BE%D0%BD%D0%B8/c/P11040101?pageselect=100&page=1&q=:price-asc&text=&layout=List&sort=price-asc';
-const $init = require('jquery');
+const _ = require("lodash");
 
-const extractPageUrls = async () => {
-    const dom = await JSDOM.fromURL(url);
+const $init = require("jquery");
+
+const getPagesUrls = async () => {
+    const technopolisLink = "http://www.technopolis.bg/bg//%D0%9C%D0%BE%D0%B1%D0%B8%D0%BB%D0%BD%D0%B8-%D1%82%D0%B5%D0%BB%D0%B5%D1%84%D0%BE%D0%BD%D0%B8-%D0%B8-%D0%A2%D0%B0%D0%B1%D0%BB%D0%B5%D1%82%D0%B8/%D0%9C%D0%BE%D0%B1%D0%B8%D0%BB%D0%BD%D0%B8-%D1%82%D0%B5%D0%BB%D0%B5%D1%84%D0%BE%D0%BD%D0%B8/c/P11040101?pricerange=&pageselect=100&page=";
+    const dom = await JSDOM.fromURL(technopolisLink + 0);
     const $ = $init(dom.window);
-    const pageLinksSelector = '.paging a';
+    const pagesLinks = [...$(".paging a")].map((link) => {
+        const sublink = $(link).attr("href");
+        const fromIndex = sublink.indexOf("&page=") + "&page=".length;
+        const toIndex = sublink.indexOf("&", fromIndex + 1);
+        const page = sublink.substring(fromIndex, toIndex);
+        return technopolisLink + page;
+    });
 
-   return [...$(pageLinksSelector)].map((link) => $(link))
-        .map(($link) => $link.attr('href'));
+    return [technopolisLink, ...pagesLinks];
+};
+
+const getUrls = async () => {
+    const pageUrls = await getPagesUrls();
+
+    const links = (await Promise.all(pageUrls.map((pageUrl) => JSDOM.fromURL(pageUrl))))
+        .map((dom) => $init(dom.window))
+        .map(($) => [...$(".product-box h2 a")]
+            .map((link) => $(link)
+                .attr("href")));
+
+    return _.chain(links)
+        .flatten()
+        .sortedUniq()
+        .value();
 };
 
 const run = async () => {
-    const pageUrls = await extractPageUrls();
+    const urls = await getUrls();
+    console.log(urls.length);
+    // const pageUrls = await getPagesUrls();
+    // console.log(pageUrls);
 };
-
 
 run();
