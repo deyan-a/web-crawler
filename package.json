@@ -11,14 +11,18 @@
     "url": "git+https://github.com/deyan-a/web-crawler.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Deyan Atanasov",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/deyan-a/web-crawler/issues"
   },
   "homepage": "https://github.com/deyan-a/web-crawler#readme",
   "dependencies": {
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.18.1",
+    "eslint-config-google": "^0.9.1",
     "jquery": "^3.3.1",
-    "jsdom": "^11.6.2"
+    "jsdom": "^11.6.2",
+    "lodash": "^4.17.5"
   }
 }
