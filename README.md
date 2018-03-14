@@ -1,2 +1,2 @@
 # web-crawler
-a web crawler project assignment utilizing node.js and mariadb
+a web crawler individual project assignment utilizing node.js and mariadb.

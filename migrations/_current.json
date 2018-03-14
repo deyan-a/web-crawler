@@ -1,0 +1,143 @@
+{
+    "tables": {
+        "Brands": {
+            "tableName": "Brands",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "allowNull": false,
+                    "unique": true,
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "Features": {
+            "tableName": "Features",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "model": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.STRING"
+                },
+                "size": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.STRING"
+                },
+                "camera": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.STRING"
+                },
+                "chipset": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.STRING"
+                },
+                "ram": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.STRING"
+                },
+                "Battery": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                },
+                "BrandId": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "Brands",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "Webpages": {
+            "tableName": "Webpages",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "allowNull": false,
+                    "unique": true,
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "webpagePhone": {
+            "tableName": "webpagePhone",
+            "schema": {
+                "createdAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "seqType": "Sequelize.DATE"
+                },
+                "FeatureId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "Features",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "WebpageId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "Webpages",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "revision": 5
+}
